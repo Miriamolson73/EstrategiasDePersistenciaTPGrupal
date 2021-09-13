@@ -54,5 +54,24 @@
 
 
 **************************************************************
+**En windows
+1) clonar el código del repositorio:
 
+     git clone https://github.com/Miriamolson73/EstrategiasDePersistenciaTPGrupal.git
 
+2) Entrar a unahur/api.
+     cd /api 
+
+3) Realizar la instalación de sus dependencias.
+     npm install
+
+4) Realizar la instalación de sequelize-cli
+     npm install sequelize-cli –save
+
+5) Ejecutar las migraciones -> estas son las creaciones de la base de datos.
+     npx sequelize db:migrate
+
+6) Levantar la api, con la siguiente instrucción.
+DEBUG=api:* npm start
+
+7) Ingresar por navegador a : http://localhost:3001/car
