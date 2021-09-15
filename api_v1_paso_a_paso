@@ -68,6 +68,10 @@
 4) Realizar la instalación de sequelize-cli
      npm install sequelize-cli -–save
 
+*) Antes de ejecutar los comandos siguientes, levantar la base de datos y 
+  crearla con el nombre que se usa en el api/config/config.json
+	
+
 5) Ejecutar las migraciones -> estas son las creaciones de la base de datos.
      npx sequelize db:migrate
 
