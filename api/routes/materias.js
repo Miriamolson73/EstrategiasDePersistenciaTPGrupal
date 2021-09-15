@@ -4,7 +4,7 @@ var models = require("../models");
 
 router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
-  models.materia
+  models.materias
     .findAll({
       attributes: ["id", "nombre", "id_carrera"]
     })
@@ -13,7 +13,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  models.materia
+  models.materias
     .create({ nombre: req.body.nombre, id_carrera:req.body.id_carrera })
     .then(materia => res.status(201).send({ id: materia.id }))
     .catch(error => {
@@ -28,7 +28,7 @@ router.post("/", (req, res) => {
 });
 
 const findMateria = (id, { onSuccess, onNotFound, onError }) => {
-  models.materia
+  models.materias
     .findOne({
       attributes: ["id", "nombre","id_carrera"],
       where: { id }
