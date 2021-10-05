@@ -79,3 +79,11 @@
 DEBUG=api:* npm start
 
 7) Ingresar por navegador a : http://localhost:3001/car
+
+
+/////////////////////////////////////////////////
+ASOCIACIONES
+1. MODIFICAR EL MODELS AL CUEL QUEREMOS RELACIONAR "CORRER NUEVAMENTE EL DB:MIGRATE"
+2. EN ROUTES MODIFICAR LOS METODOS GET (no es necesario correr la migracion)
+3. NPM START
+

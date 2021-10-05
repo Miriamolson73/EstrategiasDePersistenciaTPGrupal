@@ -6,7 +6,10 @@ router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
   models.materias
     .findAll({
-      attributes: ["id", "nombre", "id_carrera"]
+      attributes: ["id", "nombre", "id_carrera"],
+       /////////se agrega la asociacion 
+       include:[{as:'Carrera-Relacionada', model:models.carrera, attributes: ["id","nombre"]}]
+       ////////////////////////////////
     })
     .then(materias => res.send(materias))
     .catch(() => res.sendStatus(500));
@@ -31,6 +34,11 @@ const findMateria = (id, { onSuccess, onNotFound, onError }) => {
   models.materias
     .findOne({
       attributes: ["id", "nombre","id_carrera"],
+        /////////se agrega la asociacion 
+        include:[{as:'Carrera-Relacionada', model:models.carrera, attributes: ["id","nombre"]}],
+        ////////////////////////////////
+ 
+       ////////// aca iria el codigo?
       where: { id }
     })
     .then(materia => (materia ? onSuccess(materia) : onNotFound()))
