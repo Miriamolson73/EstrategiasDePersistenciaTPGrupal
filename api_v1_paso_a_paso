@@ -23,16 +23,21 @@
      DEBUG=api:* npm start
 
 
-     //la linea de abajo genero la migracion, creando un modelo(tabla)
+     COMANDO PARA LA CREACION DE UNA NUEVA ENTIDAD:
+     *********************************************
+     
                                         //nombreTabla          //campo y tipo de datos
 
      ejemplo : npx sequelize-cli model:generate --name materias --attributes nombre:string
 
+     
      $npx sequelize-cli model:generate --name carrera --attributes nombre:string
 
      luego: 
 
      // plasma el fichero recien creado con el comando de arriba en la base de datos
+
+     //la linea de abajo genero la migracion, creando un modelo(tabla)
 
      $npx sequelize db:migrate 
 
@@ -83,7 +88,20 @@ DEBUG=api:* npm start
 
 /////////////////////////////////////////////////
 ASOCIACIONES
-1. MODIFICAR EL MODELS AL CUEL QUEREMOS RELACIONAR "CORRER NUEVAMENTE EL DB:MIGRATE"
+1. MODIFICAR EL MODELS AL CUAL QUEREMOS RELACIONAR "CORRER NUEVAMENTE EL $npx sequelize db:migrate"
 2. EN ROUTES MODIFICAR LOS METODOS GET (no es necesario correr la migracion)
 3. NPM START
+
+
+Segunda Iteracion / Creacion de nuevo modelo y relación:
+*******************************************************
+
+COMANDO PARA LA CREACION DE UNA NUEVO MODELO:
+*********************************************
+     
+                                        //nombreTabla          //campo y tipo de datos
+
+ejemplo utilizado: 
+
+$npx sequelize-cli model:generate --name alumno --attributes nombre:string,apellido:string,id_materia:integer
 
