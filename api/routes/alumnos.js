@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var models = require("../models");
+const jwt = require("jsonwebtoken");
 
 router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
@@ -51,8 +52,9 @@ router.get("/:id", (req, res) => {
     onError: () => res.sendStatus(500)
   });
 });
-
-router.put("/:id", (req, res) => {
+// solamente update con token ////////////////////////////
+router.put("/:id",verificarToken, (req, res) => {
+  //*********************** */
   const onSuccess = unAlumno =>
     unAlumno
       .update({ nombre: req.body.nombre }, { fields: ["nombre"] })
@@ -66,13 +68,30 @@ router.put("/:id", (req, res) => {
           res.sendStatus(500)
         }
       });
-    findAlumno(req.params.id, {
-    onSuccess,
-    onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
-  });
-});
+      ////**////
 
+  jwt.verify(req.token, 'llave', (error, authData) => {
+    if(error){
+        res.sendStatus(403);
+    }else{
+         res.json({
+                mensaje: "Usuario Autorizado",    
+                observacion: "Se modifico el usuario",         
+              
+              
+              
+                // authData
+            }); 
+            findAlumno(req.params.id, {
+              onSuccess,
+              onNotFound: () => res.sendStatus(404),
+              onError: () => res.sendStatus(500)
+            });
+    }
+  
+    
+});
+});
 router.delete("/:id", (req, res) => {
   const onSuccess = unAlumno =>
     unAlumno
@@ -85,5 +104,35 @@ router.delete("/:id", (req, res) => {
     onError: () => res.sendStatus(500)
   });
 });
+
+//******************************** */
+// antes de iniciar el update tiene que solicitar clave a /alu/login
+router.post("/login", (req , res) => {
+  const usuario = {
+      id: 1,
+      nombre : "Pablo",
+      apellido: "Marcelli"
+  }
+
+  jwt.sign({usuario}, 'llave', {expiresIn: '300s'}, (err, token) => {
+      res.json({
+          token
+      });
+  });
+});
+
+  function verificarToken(req, res, next){
+    const bearerHeader =  req.headers['authorization'];
+
+    if(typeof bearerHeader !== 'undefined'){
+         const bearerToken = bearerHeader.split(" ")[1];
+         req.token  = bearerToken;
+         next();
+    }else{
+        res.sendStatus(403);
+    }
+}
+
+
 
 module.exports = router;
