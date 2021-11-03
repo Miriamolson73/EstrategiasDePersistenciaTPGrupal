@@ -3,8 +3,6 @@ const jwt = require("jsonwebtoken");
 var router = express.Router();
 
 
-
-
 router.get("/", (req , res) => {
     res.json({
         mensaje: "Nodejs and JWT"

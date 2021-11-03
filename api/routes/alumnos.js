@@ -52,13 +52,17 @@ router.get("/:id", (req, res) => {
     onError: () => res.sendStatus(500)
   });
 });
-// solamente update con token ////////////////////////////
+
+
+// solamente update con token 
+//Si el token esta verificado, puedo realizar el cambio
+//y el 'put' solo funciona generando previamente el token
 router.put("/:id",verificarToken, (req, res) => {
-  //*********************** */
+  
   const onSuccess = unAlumno =>
     unAlumno
       .update({ nombre: req.body.nombre }, { fields: ["nombre"] })
-      .then(() => res.sendStatus(200))
+      .then(() => res.json({Mensaje: "Usuario autorizado y cambio de nombre realizado"}))
       .catch(error => {
         if (error == "SequelizeUniqueConstraintError: Validation error") {
           res.status(400).send('Bad request: existe otra/o alumno con el mismo nombre')
@@ -68,30 +72,24 @@ router.put("/:id",verificarToken, (req, res) => {
           res.sendStatus(500)
         }
       });
-      ////**////
-
+      
+      // con esta funcion se verifica que el token generado sea el correcto
+      //si eso sucede , se llama a 'findAlumno' y se ejecuta la lógica del cambio a realizar 
   jwt.verify(req.token, 'llave', (error, authData) => {
     if(error){
         res.sendStatus(403);
     }else{
-         res.json({
-                mensaje: "Usuario Autorizado",    
-                observacion: "Se modifico el usuario",         
-              
-              
-              
-                // authData
-            }); 
+       
             findAlumno(req.params.id, {
               onSuccess,
               onNotFound: () => res.sendStatus(404),
               onError: () => res.sendStatus(500)
             });
     }
-  
-    
 });
 });
+
+
 router.delete("/:id", (req, res) => {
   const onSuccess = unAlumno =>
     unAlumno
@@ -105,8 +103,10 @@ router.delete("/:id", (req, res) => {
   });
 });
 
-//******************************** */
-// antes de iniciar el update tiene que solicitar clave a /alu/login
+
+//Esta funcion general el token con los datos de usuario ingresados
+// antes de iniciar el update tiene que solicitar clave a /alu/login 
+//para poder realizar algun cambio
 router.post("/login", (req , res) => {
   const usuario = {
       id: 1,
@@ -114,6 +114,7 @@ router.post("/login", (req , res) => {
       apellido: "Marcelli"
   }
 
+  //genera el token con los datos que vienen de 'usuario' y se configura el tiempo de vencimiento
   jwt.sign({usuario}, 'llave', {expiresIn: '300s'}, (err, token) => {
       res.json({
           token
@@ -121,6 +122,7 @@ router.post("/login", (req , res) => {
   });
 });
 
+  //
   function verificarToken(req, res, next){
     const bearerHeader =  req.headers['authorization'];
 
