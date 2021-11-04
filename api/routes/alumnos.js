@@ -16,6 +16,32 @@ router.get("/", (req, res) => {
     .catch(() => res.sendStatus(500));
 });
 
+// paginacion
+
+router.get("/pag", (req, res) => {
+
+  const pagina = parseInt(req.query.nPagina)
+  const cantidadElementos = parseInt(req.query.nElementos)  
+
+  models.alumno
+    .findAll({
+      attributes: ["id", "nombre", "apellido", "id_materia"],
+       /////////se agrega la asociacion 
+       include:[{as: 'Materia-Relacionada', model:models.materias, attributes: ["id","nombre"]}],
+       ////////////////////////////////
+
+       offset:(pagina -1 ) * cantidadElementos, // desde donde hasta donde en cada pag
+       limit: cantidadElementos
+
+    })
+    .then(alumno => res.send(alumno))
+    .catch(() => res.sendStatus(500));
+
+});
+
+
+
+
 router.post("/", (req, res) => {
   models.alumno
     .create({ nombre: req.body.nombre, apellido: req.body.apellido, id_materia:req.body.id_materia })

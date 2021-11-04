@@ -105,3 +105,44 @@ ejemplo utilizado:
 
 $npx sequelize-cli model:generate --name alumno --attributes nombre:string,apellido:string,id_materia:integer
 
+*************************************************
+
+Prueba funcionalidad token
+**************************
+1) generar token
+POST  - localhost:3001/tok/login
+
+2) para modificar la tabla alumnos
+solicitamos y generamos el token
+POST - localhost:3001/alu/login
+
+para modificar nos solicita el token recien creado
+
+PUT - localhost:3001/alu/id 
+
+headers 
+key = authorization 
+value = Bearer token (donde "token" es el token que generamos anteriormente)
+
+Luego:
+body = raw / json
+
+{"nombre":"Juana"}
+
+Mensaje Obtenido: 
+{
+    "mensaje": "Usuario Autorizado",
+    "observacion": "Se modifico el usuario"
+}
+
+
+Consultar Paginacion desde postman:
+***********************************
+Se rellenará automaticamente en "Params", "Key" y "Values"
+
+KEY=nPagina,
+VALUE=nElementos
+
+GET - localhost:3001/alu/pag?nPagina=1&nElementos=1
+
+
