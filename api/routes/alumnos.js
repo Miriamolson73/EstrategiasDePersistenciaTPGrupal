@@ -88,7 +88,7 @@ router.put("/:id",verificarToken, (req, res) => {
   const onSuccess = unAlumno =>
     unAlumno
       .update({ nombre: req.body.nombre }, { fields: ["nombre"] })
-      .then(() => res.json({Mensaje: "Usuario autorizado y cambio de nombre realizado"}))
+      .then(() => res.send(`Usuario autorizado y cambio de nombre a ${req.body.nombre} ${unAlumno.apellido} realizado`))
       .catch(error => {
         if (error == "SequelizeUniqueConstraintError: Validation error") {
           res.status(400).send('Bad request: existe otra/o alumno con el mismo nombre')
@@ -120,7 +120,7 @@ router.delete("/:id", (req, res) => {
   const onSuccess = unAlumno =>
     unAlumno
       .destroy()
-      .then(() => res.sendStatus(200))
+      .then(() => res.status(200).send(`Alumno dado de baja id: ${unAlumno.id}, apellido: ${unAlumno.apellido} nombre :${unAlumno.nombre}`))
       .catch(() => res.sendStatus(500));
   findAlumno(req.params.id, {
     onSuccess,

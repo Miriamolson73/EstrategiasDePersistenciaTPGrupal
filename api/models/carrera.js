@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
  
   //codigo de asociacion  (tiene muchos:)
+  //uno a muchos, asocia las materias que tiene una carrera
   carrera.associate = function(models) {
   	carrera.hasMany(models.materias,  // Modelo al que pertenece
     {
